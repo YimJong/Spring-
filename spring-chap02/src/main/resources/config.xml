@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans   
+       http://www.springframework.org/schema/beans/spring-beans.xsd"> 
+
+	<bean id="user1" class="com.dev.YimJ.User">
+		<constructor-arg value="bkchoi"></constructor-arg>
+		<constructor-arg value="asdf"></constructor-arg>
+	</bean>
+	
+	<bean id="user2" class="com.dev.YimJ.User">
+		<constructor-arg value="happyvirus"></constructor-arg>
+		<constructor-arg value="qwer"></constructor-arg>
+	</bean>
+	
+	<bean id="userRepository" class="com.dev.YimJ.UserRepository">
+		<property name="users">
+			<list>
+				<ref bean="user1"></ref>
+				<ref bean="user2"></ref>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="pwChangeSvc" class="com.dev.YimJ.PasswordChangeService">
+		<constructor-arg ref="userRepository"></constructor-arg>
+	</bean>
+	
+	<bean id="authFailLogger" class="com.dev.YimJ.AuthFailLogger">
+		<property name="threshold" value='3'></property>
+	</bean>
+	
+	<bean id="authenticationService" class="com.dev.YimJ.AuthenticationService">
+		<property name="failLogger" ref="authFailLogger"></property>
+		<property name="userRepository" ref="userRepository"></property>		
+	</bean>
+	
+</beans>
